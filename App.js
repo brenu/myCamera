@@ -33,10 +33,6 @@ export default function App() {
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(foto);
-  }, [foto]);
-
   async function takePicture() {
     if (this.camera) {
       const options = { quality: 1, skiProcessing: false };
