@@ -1,6 +1,8 @@
 # myCamera
 
-![]('./assets/icon.png')
+<p align="center">
+  <img src="/assets/icon.png" width="100" height="100" />
+</p>
 
 ## What it is?
 
