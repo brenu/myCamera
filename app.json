@@ -17,6 +17,10 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "androidNavigationBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#444444"
+    },
     "ios": {
       "supportsTablet": true
     },
