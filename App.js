@@ -39,7 +39,8 @@ export default function App() {
 
   async function takePicture() {
     if (this.camera) {
-      const photo = await this.camera.takePictureAsync();
+      const options = { quality: 1, skiProcessing: false };
+      const photo = await this.camera.takePictureAsync(options);
       await MediaLibrary.saveToLibraryAsync(photo.uri);
       return photo.uri;
     }
@@ -84,15 +85,17 @@ export default function App() {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <Camera
-          style={styles.camera}
-          type={type}
-          ref={(ref) => {
-            this.camera = ref;
-          }}
-          flashMode={flashType}
-          zoom={zoomType}
-        ></Camera>
+        <View style={styles.cameraContainer}>
+          <Camera
+            style={styles.camera}
+            type={type}
+            ref={(ref) => {
+              this.camera = ref;
+            }}
+            flashMode={flashType}
+            zoom={zoomType}
+          ></Camera>
+        </View>
         <View style={styles.btnsContainer}>
           <TouchableOpacity
             style={styles.btn}
@@ -157,6 +160,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#444",
+    justifyContent: "flex-start",
   },
   btn: {
     alignSelf: "center",
@@ -164,10 +168,14 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   btnsContainer: {
-    flex: 0.2,
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 20,
+  },
+  cameraContainer: {
+    flex: 0.85,
+    backgroundColor: "#444",
+    marginTop: 0,
   },
   camera: {
     flex: 1,
