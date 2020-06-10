@@ -6,7 +6,7 @@
 
 ## What it is?
 
-It's just my personal implementation of a android camera app
+It's just my personal implementation of an android camera app
 
 ## Tools
 
@@ -23,6 +23,8 @@ myCamera is entirely made by using React Native with Expo
 ## Todo list
 
 > - Video recording
+> - Settings for the user to change the image/video quality
+> - User Intercace improvement (because it's DEFINITELY not that pretty)
 > - HDR (It's more like a dream, because by now I have no ideia of how to do that)
 
 ## And if you want to...
