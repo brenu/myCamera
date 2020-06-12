@@ -18,11 +18,14 @@ myCamera is entirely made by using React Native with Expo
 > - Change between front and rear camera
 > - Enable and disable flash
 > - Zoom
-> - Access to the gallery (actually, it's not complete)
+
+## What I'm doing
+
+> - Access to the gallery (working but not as it's supposed to)
+> - Video recording (methods already implemented, but the user still can't call them)
 
 ## Todo list
 
-> - Video recording
 > - Settings for the user to change the image/video quality
 > - User Intercace improvement (because it's DEFINITELY not that pretty)
 > - HDR (It's more like a dream, because by now I have no ideia of how to do that)
