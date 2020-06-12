@@ -8,6 +8,7 @@ import {
   StatusBar,
 } from "react-native";
 import { Camera, getPermissionsAsync } from "expo-camera";
+import { Audio } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import {
@@ -19,10 +20,13 @@ import {
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasCameraRollPermission, setHasCameraRollPermission] = useState(null);
+  const [hasAudioPermission, setHasAudioPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
   const [zoomType, setZoomType] = useState(0);
   const [foto, setFoto] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [video, setVideo] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -30,15 +34,44 @@ export default function App() {
       setHasCameraPermission(status.granted === true);
       let abreGa = await ImagePicker.requestCameraRollPermissionsAsync();
       setHasCameraRollPermission(abreGa.granted === true);
+      let audio = await Audio.requestPermissionsAsync();
+      setHasAudioPermission(audio.granted === true);
     })();
   }, []);
 
+  // Function that has to take pictures from the camera
   async function takePicture() {
     if (this.camera) {
       const options = { quality: 1, skiProcessing: false };
       const photo = await this.camera.takePictureAsync(options);
       await MediaLibrary.saveToLibraryAsync(photo.uri);
       return photo.uri;
+    }
+  }
+
+  // Function that handles the video recording process
+  async function handleRecording() {
+    if (isRecording === false) {
+      setVideo(videoRecord());
+      setIsRecording(true);
+      return;
+    } else {
+      videoRecord();
+      setIsRecording(false);
+    }
+  }
+
+  // Function that has to record videos from the camera
+  async function videoRecord() {
+    if (this.camera) {
+      if (isRecording === false) {
+        const record = await this.camera.recordAsync();
+        await MediaLibrary.saveToLibraryAsync(record.uri);
+        return record.uri;
+      } else {
+        await this.camera.stopRecording();
+        return "nothing";
+      }
     }
   }
 
@@ -49,10 +82,18 @@ export default function App() {
     return result.uri;
   }
 
-  if (hasCameraPermission === null || hasCameraRollPermission === null) {
+  if (
+    hasCameraPermission === null ||
+    hasCameraRollPermission === null ||
+    hasAudioPermission === null
+  ) {
     return <View />;
   }
-  if (hasCameraPermission === false || hasCameraRollPermission === false) {
+  if (
+    hasCameraPermission === false ||
+    hasCameraRollPermission === false ||
+    hasAudioPermission === false
+  ) {
     return <Text>No access to camera</Text>;
   }
 
