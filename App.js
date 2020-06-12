@@ -27,6 +27,7 @@ export default function App() {
   const [foto, setFoto] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [video, setVideo] = useState("");
+  const [mode, setMode] = useState("photo");
 
   useEffect(() => {
     (async () => {
@@ -38,6 +39,10 @@ export default function App() {
       setHasAudioPermission(audio.granted === true);
     })();
   }, []);
+
+  function handleMode() {
+    return mode === "photo" ? setFoto(takePicture) : handleRecording();
+  }
 
   // Function that has to take pictures from the camera
   async function takePicture() {
@@ -134,43 +139,74 @@ export default function App() {
           ></Camera>
         </View>
         <View style={styles.btnsContainer}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {
-              setFoto(pickImage);
-            }}
-          >
-            <Ionicons
-              name="ios-photos"
-              style={{ color: "#fff", fontSize: 40 }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {
-              setFoto(takePicture());
-            }}
-          >
-            <FontAwesome
-              name="camera"
-              style={{ color: "#fff", fontSize: 40 }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}
-          >
-            <MaterialCommunityIcons
-              name="camera-switch"
-              style={{ color: "#fff", fontSize: 40 }}
-            />
-          </TouchableOpacity>
+          <View style={styles.optionsBtnsContainer}>
+            {mode === "photo" ? (
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => setMode("video")}
+              >
+                <Ionicons
+                  name="ios-videocam"
+                  style={{ color: "#fff", fontSize: 30 }}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => setMode("photo")}
+              >
+                <Ionicons
+                  name="ios-camera"
+                  style={{ color: "#fff", fontSize: 30 }}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+          <View style={styles.mainBtnsContainer}>
+            <TouchableOpacity style={styles.btn} onPress={pickImage}>
+              <Ionicons
+                name="ios-photos"
+                style={{ color: "#fff", fontSize: 40 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btn} onPress={handleMode}>
+              {mode === "photo" ? (
+                <FontAwesome
+                  name="camera"
+                  style={{ color: "#fff", fontSize: 60 }}
+                />
+              ) : (
+                <>
+                  {isRecording === false ? (
+                    <FontAwesome
+                      name="circle"
+                      style={{ color: "#d33", fontSize: 60 }}
+                    />
+                  ) : (
+                    <FontAwesome
+                      name="stop-circle"
+                      style={{ color: "#d33", fontSize: 60 }}
+                    />
+                  )}
+                </>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => {
+                setType(
+                  type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back
+                );
+              }}
+            >
+              <MaterialCommunityIcons
+                name="camera-switch"
+                style={{ color: "#fff", fontSize: 40 }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         {foto !== "" && (
           <View style={styles.fotoContainer}>
@@ -205,9 +241,19 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   btnsContainer: {
+    flex: 0.32,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    marginTop: 20,
+    paddingBottom: 50,
+  },
+  optionsBtnsContainer: {
+    marginBottom: 30,
+  },
+  mainBtnsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 20,
+    marginHorizontal: 30,
   },
   cameraContainer: {
     flex: 0.85,
