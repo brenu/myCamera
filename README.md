@@ -27,7 +27,7 @@ myCamera is entirely made by using React Native with Expo
 ## Todo list
 
 > - Settings for the user to change the image/video quality
-> - User Intercace improvement (because it's DEFINITELY not that pretty)
+> - User Interface improvement (because it's DEFINITELY not that pretty)
 > - HDR (It's more like a dream, because by now I have no ideia of how to do that)
 
 ## And if you want to...
