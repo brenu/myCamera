@@ -3,12 +3,8 @@
     "name": "myCamera",
     "slug": "mycamera",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "0.1.0",
+    "platforms": ["ios", "android", "web"],
+    "version": "0.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -19,9 +15,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
+    "androidStatusBar": {
+      "barStyle": "light-content"
+    },
     "androidNavigationBar": {
       "barStyle": "light-content",
       "backgroundColor": "#444444"
@@ -31,7 +28,7 @@
     },
     "android": {
       "package": "com.brenu.camera",
-      "versionCode": 1
+      "versionCode": 2
     }
   }
 }
