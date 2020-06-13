@@ -34,3 +34,7 @@ myCamera is entirely made by using React Native with Expo
 
 You have the right to use the code of myCamera in another application of yours. Also, I would love to
 receive some suggestions :D
+
+## See myCamera
+
+> - [Play Store](https://play.google.com/store/apps/details?id=com.brenu.camera)
