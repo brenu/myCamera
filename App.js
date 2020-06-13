@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   btnsContainer: {
-    flex: 0.32,
+    flex: 0.2,
     flexDirection: "column",
     justifyContent: "space-between",
     marginTop: 20,
