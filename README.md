@@ -37,4 +37,4 @@ receive some suggestions :D
 
 ## See myCamera
 
-> - [Play Store](https://play.google.com/store/apps/details?id=com.brenu.camera)
+> - [Play Store](https://play.google.com/store/apps/details?id=com.brenu.camera) P.S.: Most part of the time, the Play Store version will not be the same as GitHub version, because it takes time for the new build to be approved by Google Play Console.
