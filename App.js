@@ -1,7 +1,7 @@
 import React from "react";
 
-import Main from "./src/pages/Main";
+import Routes from "./src/routes";
 
 export default function App() {
-  return <Main />;
+  return <Routes />;
 }
