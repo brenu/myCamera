@@ -24,10 +24,10 @@ myCamera is entirely made by using React Native with Expo
 
 > - Access to the gallery (working but not as it's supposed to)
 > - Settings for the user to change the image/video quality
+> - Camera2API
 
 ## Todo list
 
-> - Camera2API
 > - Focus depth (needs Camera2API)
 > - User Interface improvement (because it's DEFINITELY not that pretty)
 > - HDR (It's more like a dream, because by now I have no ideia of how to do that)
