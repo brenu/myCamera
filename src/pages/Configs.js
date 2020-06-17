@@ -10,10 +10,10 @@ import {
 
 export default function Configs({ navigation }) {
   const [quality, setQuality] = useState(1);
-  const [videoQuality, setVideoQuality] = useState("2160p");
+  const [videoQuality, setVideoQuality] = useState("720p");
 
   useEffect(() => {
-    async function getData() {
+    async function handleSettings() {
       const imageData = await AsyncStorage.getItem("quality");
       const videoData = await AsyncStorage.getItem("videoQuality");
 
@@ -26,12 +26,14 @@ export default function Configs({ navigation }) {
       }
     }
 
-    getData();
-  }, [navigation]);
+    handleSettings();
+  }, []);
 
   useEffect(() => {
     async function handleSettings() {
-      await AsyncStorage.setItem("quality", String(quality));
+      setTimeout(async () => {
+        await AsyncStorage.setItem("videoQuality", videoQuality);
+      }, 200);
     }
 
     handleSettings();
@@ -39,7 +41,9 @@ export default function Configs({ navigation }) {
 
   useEffect(() => {
     async function handleSettings() {
-      await AsyncStorage.setItem("videoQuality", videoQuality);
+      setTimeout(async () => {
+        await AsyncStorage.setItem("videoQuality", videoQuality);
+      }, 200);
     }
 
     handleSettings();
@@ -62,8 +66,6 @@ export default function Configs({ navigation }) {
     } else if (videoQuality === "2160p") {
       setVideoQuality("720p");
     }
-
-    return;
   }
 
   return (
