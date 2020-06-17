@@ -18,8 +18,7 @@
     "assetBundlePatterns": ["**/*"],
     "androidStatusBar": {
       "barStyle": "light-content",
-      "backgroundColor": "#00000000",
-      "translucent": true
+      "backgroundColor": "#444444"
     },
     "androidNavigationBar": {
       "barStyle": "light-content",
