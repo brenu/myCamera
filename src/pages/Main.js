@@ -33,6 +33,7 @@ export default function Main({ navigation }) {
 
   //Props for the settings
   const [quality, setQuality] = useState(1);
+  const [videoQuality, setVideoQuality] = useState("2160p");
 
   useEffect(() => {
     (async () => {
@@ -47,10 +48,15 @@ export default function Main({ navigation }) {
 
   useFocusEffect(() => {
     async function handleSettings() {
-      const data = await AsyncStorage.getItem("quality");
+      const imageData = await AsyncStorage.getItem("quality");
+      const videoData = await AsyncStorage.getItem("videoQuality");
 
-      if (data) {
-        setQuality(Number(data));
+      if (imageData) {
+        setQuality(Number(imageData));
+      }
+
+      if (videoData) {
+        setVideoQuality(videoData);
       }
     }
 
@@ -102,7 +108,8 @@ export default function Main({ navigation }) {
   async function videoRecord() {
     if (this.camera) {
       if (isRecording === false) {
-        const record = await this.camera.recordAsync();
+        const options = { quality: videoQuality };
+        const record = await this.camera.recordAsync(options);
         await MediaLibrary.saveToLibraryAsync(record.uri);
         return record.uri;
       } else {
