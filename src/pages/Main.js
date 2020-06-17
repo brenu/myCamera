@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import { Camera, getPermissionsAsync } from "expo-camera";
+import { Camera, getPermissionsAsync, Constants } from "expo-camera";
 import { Audio } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
@@ -157,6 +157,7 @@ export default function Main({ navigation }) {
             }}
             flashMode={flashType}
             zoom={zoomType}
+            useCamera2Api={true}
           ></Camera>
         </View>
         <View style={styles.btnsContainer}>
