@@ -16,8 +16,9 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default function Main() {
+export default function Main({ navigation }) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasCameraRollPermission, setHasCameraRollPermission] = useState(null);
   const [hasAudioPermission, setHasAudioPermission] = useState(null);
@@ -85,6 +86,10 @@ export default function Main() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
     });
     return result.uri;
+  }
+
+  function handleConfig() {
+    navigation.navigate("Configs");
   }
 
   if (
@@ -161,6 +166,12 @@ export default function Main() {
                 />
               </TouchableOpacity>
             )}
+            <TouchableOpacity style={styles.btn} onPress={handleConfig}>
+              <Ionicons
+                name="ios-construct"
+                style={{ color: "#fff", fontSize: 25 }}
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.mainBtnsContainer}>
             <TouchableOpacity style={styles.btn} onPress={pickImage}>
@@ -248,6 +259,9 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   optionsBtnsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
     marginBottom: 30,
   },
   mainBtnsContainer: {
