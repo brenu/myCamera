@@ -1,13 +1,23 @@
 import React from "react";
 import {
+  AsyncStorage,
   StyleSheet,
   TouchableOpacity,
   Text,
   View,
   StatusBar,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
-export default function Configs() {
+export default function Configs({ navigation }) {
+  useFocusEffect(() => {
+    async function handleSettings() {
+      await AsyncStorage.setItem("quality", "1");
+    }
+
+    handleSettings();
+  }, [navigation]);
+
   return (
     <>
       <View style={styles.header}>

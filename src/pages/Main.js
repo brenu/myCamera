@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  AsyncStorage,
   Image,
   StyleSheet,
   Text,
@@ -16,7 +17,7 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Main({ navigation }) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -30,6 +31,9 @@ export default function Main({ navigation }) {
   const [video, setVideo] = useState("");
   const [mode, setMode] = useState("photo");
 
+  //Props for the settings
+  const [quality, setQuality] = useState(1);
+
   useEffect(() => {
     (async () => {
       let status = await Camera.requestPermissionsAsync();
@@ -41,6 +45,33 @@ export default function Main({ navigation }) {
     })();
   }, []);
 
+  useFocusEffect(() => {
+    async function handleSettings() {
+      const data = await AsyncStorage.getItem("quality");
+
+      if (data) {
+        setQuality(Number(data));
+      }
+    }
+
+    handleSettings();
+  }, []);
+
+  if (
+    hasCameraPermission === null ||
+    hasCameraRollPermission === null ||
+    hasAudioPermission === null
+  ) {
+    return <View />;
+  }
+  if (
+    hasCameraPermission === false ||
+    hasCameraRollPermission === false ||
+    hasAudioPermission === false
+  ) {
+    return <Text>No access to camera</Text>;
+  }
+
   function handleMode() {
     return mode === "photo" ? setFoto(takePicture) : handleRecording();
   }
@@ -48,7 +79,7 @@ export default function Main({ navigation }) {
   // Function that has to take pictures from the camera
   async function takePicture() {
     if (this.camera) {
-      const options = { quality: 1, skiProcessing: false };
+      const options = { quality: quality, skiProcessing: false };
       const photo = await this.camera.takePictureAsync(options);
       await MediaLibrary.saveToLibraryAsync(photo.uri);
       return photo.uri;
@@ -88,23 +119,8 @@ export default function Main({ navigation }) {
     return result.uri;
   }
 
-  function handleConfig() {
-    navigation.navigate("Configs");
-  }
-
-  if (
-    hasCameraPermission === null ||
-    hasCameraRollPermission === null ||
-    hasAudioPermission === null
-  ) {
-    return <View />;
-  }
-  if (
-    hasCameraPermission === false ||
-    hasCameraRollPermission === false ||
-    hasAudioPermission === false
-  ) {
-    return <Text>No access to camera</Text>;
+  function handleConfigNavigation() {
+    navigation.navigate("Configs", { focus: 2 });
   }
 
   return (
@@ -166,7 +182,10 @@ export default function Main({ navigation }) {
                 />
               </TouchableOpacity>
             )}
-            <TouchableOpacity style={styles.btn} onPress={handleConfig}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={handleConfigNavigation}
+            >
               <Ionicons
                 name="ios-construct"
                 style={{ color: "#fff", fontSize: 25 }}
