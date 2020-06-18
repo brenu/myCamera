@@ -32,7 +32,7 @@ export default function Configs({ navigation }) {
   useEffect(() => {
     async function handleSettings() {
       setTimeout(async () => {
-        await AsyncStorage.setItem("videoQuality", videoQuality);
+        await AsyncStorage.setItem("quality", String(quality));
       }, 200);
     }
 
@@ -54,8 +54,6 @@ export default function Configs({ navigation }) {
     if (quality >= 1.0) {
       setQuality(0.1);
     }
-
-    return;
   }
 
   async function handleVideoQuality() {

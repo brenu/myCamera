@@ -51,11 +51,11 @@ export default function Main({ navigation }) {
       const imageData = await AsyncStorage.getItem("quality");
       const videoData = await AsyncStorage.getItem("videoQuality");
 
-      if (imageData) {
+      if (imageData !== "null") {
         setQuality(Number(imageData));
       }
 
-      if (videoData) {
+      if (videoData !== "null") {
         setVideoQuality(videoData);
       }
     }
