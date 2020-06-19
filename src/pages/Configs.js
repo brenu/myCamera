@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   AsyncStorage,
   StyleSheet,
@@ -6,16 +6,18 @@ import {
   Text,
   View,
   StatusBar,
-} from "react-native";
+} from 'react-native';
 
 export default function Configs({ navigation }) {
   const [quality, setQuality] = useState(1);
-  const [videoQuality, setVideoQuality] = useState("720p");
+  const [videoQuality, setVideoQuality] = useState('720p');
+  const [camera2api, setCamera2api] = useState(false);
 
   useEffect(() => {
     async function handleSettings() {
-      const imageData = await AsyncStorage.getItem("quality");
-      const videoData = await AsyncStorage.getItem("videoQuality");
+      const imageData = await AsyncStorage.getItem('quality');
+      const videoData = await AsyncStorage.getItem('videoQuality');
+      const cameraApiData = await AsyncStorage.getItem('camera2api');
 
       if (imageData) {
         setQuality(Number(imageData));
@@ -24,6 +26,10 @@ export default function Configs({ navigation }) {
       if (videoData) {
         setVideoQuality(videoData);
       }
+
+      if (cameraApiData) {
+        setCamera2api(cameraApiData);
+      }
     }
 
     handleSettings();
@@ -31,8 +37,8 @@ export default function Configs({ navigation }) {
 
   useEffect(() => {
     async function handleSettings() {
-      setTimeout(async () => {
-        await AsyncStorage.setItem("quality", String(quality));
+      setTimeout(() => {
+        AsyncStorage.setItem('quality', String(quality));
       }, 200);
     }
 
@@ -41,13 +47,23 @@ export default function Configs({ navigation }) {
 
   useEffect(() => {
     async function handleSettings() {
-      setTimeout(async () => {
-        await AsyncStorage.setItem("videoQuality", videoQuality);
+      setTimeout(() => {
+        AsyncStorage.setItem('videoQuality', videoQuality);
       }, 200);
     }
 
     handleSettings();
   }, [videoQuality]);
+
+  useEffect(() => {
+    async function handleSettings() {
+      setTimeout(() => {
+        AsyncStorage.setItem('camera2api', String(camera2api));
+      }, 200);
+    }
+
+    handleSettings();
+  }, [camera2api]);
 
   function handleQuality() {
     setQuality(quality + 0.45);
@@ -56,13 +72,21 @@ export default function Configs({ navigation }) {
     }
   }
 
-  async function handleVideoQuality() {
-    if (videoQuality === "720p") {
-      setVideoQuality("1080p");
-    } else if (videoQuality === "1080p") {
-      setVideoQuality("2160p");
-    } else if (videoQuality === "2160p") {
-      setVideoQuality("720p");
+  function handleVideoQuality() {
+    if (videoQuality === '720p') {
+      setVideoQuality('1080p');
+    } else if (videoQuality === '1080p') {
+      setVideoQuality('2160p');
+    } else if (videoQuality === '2160p') {
+      setVideoQuality('720p');
+    }
+  }
+
+  function handleCameraApi() {
+    if (camera2api === true) {
+      setCamera2api(false);
+    } else {
+      setCamera2api(true);
     }
   }
 
@@ -80,9 +104,11 @@ export default function Configs({ navigation }) {
           <Text style={styles.optionTitle}>Video Quality</Text>
           <Text style={styles.optionValue}>{videoQuality}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
+        <TouchableOpacity style={styles.option} onPress={handleCameraApi}>
           <Text style={styles.optionTitle}>Camera2API</Text>
-          <Text style={styles.optionValue}>Off</Text>
+          <Text style={styles.optionValue}>
+            {camera2api === true ? 'On' : 'Off'}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.option}>
           <Text style={styles.optionTitle}>Focus</Text>
@@ -100,35 +126,35 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#444",
+    fontWeight: 'bold',
+    color: '#444',
   },
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 30,
   },
   containerText: {},
   option: {
-    alignSelf: "stretch",
-    flexDirection: "row",
+    alignSelf: 'stretch',
+    flexDirection: 'row',
     height: 62,
-    backgroundColor: "#fff",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderColor: "#ddd",
+    backgroundColor: '#fff',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: '#ddd',
     borderBottomWidth: 1,
     borderTopWidth: 1,
     paddingHorizontal: 10,
   },
   optionTitle: {
     fontSize: 16,
-    fontWeight: "normal",
-    color: "#777",
+    fontWeight: 'normal',
+    color: '#777',
   },
   optionValue: {
     fontSize: 14,
-    fontWeight: "normal",
-    color: "#777",
+    fontWeight: 'normal',
+    color: '#777',
   },
 });

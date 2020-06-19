@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   AsyncStorage,
   Image,
@@ -7,17 +7,17 @@ import {
   View,
   TouchableOpacity,
   StatusBar,
-} from "react-native";
-import { Camera, getPermissionsAsync, Constants } from "expo-camera";
-import { Audio } from "expo-av";
-import * as MediaLibrary from "expo-media-library";
-import * as ImagePicker from "expo-image-picker";
+} from 'react-native';
+import { Camera, getPermissionsAsync, Constants } from 'expo-camera';
+import { Audio } from 'expo-av';
+import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
 import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
+} from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Main({ navigation }) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -26,14 +26,15 @@ export default function Main({ navigation }) {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
   const [zoomType, setZoomType] = useState(0);
-  const [foto, setFoto] = useState("");
+  const [foto, setFoto] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [video, setVideo] = useState("");
-  const [mode, setMode] = useState("photo");
+  const [video, setVideo] = useState('');
+  const [mode, setMode] = useState('photo');
 
   //Props for the settings
   const [quality, setQuality] = useState(1);
-  const [videoQuality, setVideoQuality] = useState("2160p");
+  const [videoQuality, setVideoQuality] = useState('2160p');
+  const [camera2api, setCamera2api] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -48,15 +49,20 @@ export default function Main({ navigation }) {
 
   useFocusEffect(() => {
     async function handleSettings() {
-      const imageData = await AsyncStorage.getItem("quality");
-      const videoData = await AsyncStorage.getItem("videoQuality");
+      const imageData = await AsyncStorage.getItem('quality');
+      const videoData = await AsyncStorage.getItem('videoQuality');
+      const cameraApiData = await AsyncStorage.getItem('camera2api');
 
-      if (imageData !== "null") {
+      if (imageData !== null) {
         setQuality(Number(imageData));
       }
 
-      if (videoData !== "null") {
+      if (videoData !== null) {
         setVideoQuality(videoData);
+      }
+
+      if (cameraApiData !== null) {
+        setCamera2api(Boolean(cameraApiData));
       }
     }
 
@@ -79,7 +85,7 @@ export default function Main({ navigation }) {
   }
 
   function handleMode() {
-    return mode === "photo" ? setFoto(takePicture) : handleRecording();
+    return mode === 'photo' ? setFoto(takePicture) : handleRecording();
   }
 
   // Function that has to take pictures from the camera
@@ -114,7 +120,7 @@ export default function Main({ navigation }) {
         return record.uri;
       } else {
         await this.camera.stopRecording();
-        return "nothing";
+        return 'nothing';
       }
     }
   }
@@ -127,7 +133,7 @@ export default function Main({ navigation }) {
   }
 
   function handleConfigNavigation() {
-    navigation.navigate("Configs", { focus: 2 });
+    navigation.navigate('Configs', { focus: 2 });
   }
 
   return (
@@ -143,7 +149,7 @@ export default function Main({ navigation }) {
             );
           }}
         >
-          <FontAwesome name="bolt" style={{ color: "#fff", fontSize: 30 }} />
+          <FontAwesome name="bolt" style={{ color: '#fff', fontSize: 30 }} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
@@ -151,7 +157,7 @@ export default function Main({ navigation }) {
             setZoomType(zoomType === 0 ? 0.5 : 0);
           }}
         >
-          <FontAwesome name="search" style={{ color: "#fff", fontSize: 30 }} />
+          <FontAwesome name="search" style={{ color: '#fff', fontSize: 30 }} />
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
@@ -164,29 +170,29 @@ export default function Main({ navigation }) {
             }}
             flashMode={flashType}
             zoom={zoomType}
-            useCamera2Api={true}
+            useCamera2Api={camera2api}
           ></Camera>
         </View>
         <View style={styles.btnsContainer}>
           <View style={styles.optionsBtnsContainer}>
-            {mode === "photo" ? (
+            {mode === 'photo' ? (
               <TouchableOpacity
                 style={styles.btn}
-                onPress={() => setMode("video")}
+                onPress={() => setMode('video')}
               >
                 <Ionicons
                   name="ios-videocam"
-                  style={{ color: "#fff", fontSize: 30 }}
+                  style={{ color: '#fff', fontSize: 30 }}
                 />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={styles.btn}
-                onPress={() => setMode("photo")}
+                onPress={() => setMode('photo')}
               >
                 <Ionicons
                   name="ios-camera"
-                  style={{ color: "#fff", fontSize: 30 }}
+                  style={{ color: '#fff', fontSize: 30 }}
                 />
               </TouchableOpacity>
             )}
@@ -196,7 +202,7 @@ export default function Main({ navigation }) {
             >
               <Ionicons
                 name="ios-construct"
-                style={{ color: "#fff", fontSize: 25 }}
+                style={{ color: '#fff', fontSize: 25 }}
               />
             </TouchableOpacity>
           </View>
@@ -204,26 +210,26 @@ export default function Main({ navigation }) {
             <TouchableOpacity style={styles.btn} onPress={pickImage}>
               <Ionicons
                 name="ios-photos"
-                style={{ color: "#fff", fontSize: 40 }}
+                style={{ color: '#fff', fontSize: 40 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.btn} onPress={handleMode}>
-              {mode === "photo" ? (
+              {mode === 'photo' ? (
                 <FontAwesome
                   name="camera"
-                  style={{ color: "#fff", fontSize: 60 }}
+                  style={{ color: '#fff', fontSize: 60 }}
                 />
               ) : (
                 <>
                   {isRecording === false ? (
                     <FontAwesome
                       name="circle"
-                      style={{ color: "#d33", fontSize: 60 }}
+                      style={{ color: '#d33', fontSize: 60 }}
                     />
                   ) : (
                     <FontAwesome
                       name="stop-circle"
-                      style={{ color: "#d33", fontSize: 60 }}
+                      style={{ color: '#d33', fontSize: 60 }}
                     />
                   )}
                 </>
@@ -241,12 +247,12 @@ export default function Main({ navigation }) {
             >
               <MaterialCommunityIcons
                 name="camera-switch"
-                style={{ color: "#fff", fontSize: 40 }}
+                style={{ color: '#fff', fontSize: 40 }}
               />
             </TouchableOpacity>
           </View>
         </View>
-        {foto !== "" && (
+        {foto !== '' && (
           <View style={styles.fotoContainer}>
             <Image source={foto} style={styles.foto} />
           </View>
@@ -259,10 +265,10 @@ export default function Main({ navigation }) {
 const styles = StyleSheet.create({
   header: {
     flex: 0.06,
-    flexDirection: "row",
-    backgroundColor: "#444",
-    alignItems: "stretch",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    backgroundColor: '#444',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
     paddingTop: StatusBar.currentHeight,
     paddingLeft: 10,
     paddingRight: 10,
@@ -270,35 +276,35 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#444",
-    justifyContent: "flex-start",
+    backgroundColor: '#444',
+    justifyContent: 'flex-start',
   },
   btn: {
-    alignSelf: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
+    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   btnsContainer: {
     flex: 0.2,
-    flexDirection: "column",
-    justifyContent: "space-between",
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     marginTop: 20,
     paddingBottom: 50,
   },
   optionsBtnsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
     marginBottom: 30,
   },
   mainBtnsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 30,
   },
   cameraContainer: {
     flex: 0.85,
-    backgroundColor: "#444",
+    backgroundColor: '#444',
     marginTop: 0,
   },
   camera: {
@@ -306,20 +312,20 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   botaoFoto: {
-    backgroundColor: "#f00",
+    backgroundColor: '#f00',
     padding: 20,
     borderRadius: 5,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   fotoContainer: {
     flex: 1,
-    position: "absolute",
-    backgroundColor: "#00000055",
-    justifyContent: "center",
-    alignItems: "center",
+    position: 'absolute',
+    backgroundColor: '#00000055',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   foto: {
-    height: "100%",
-    resizeMode: "contain",
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
