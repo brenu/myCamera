@@ -19,12 +19,12 @@ myCamera is entirely made by using React Native with Expo
 > - Change between front and rear camera
 > - Enable and disable flash
 > - Zoom
+> - Camera2API
 
 ## What I'm doing
 
 > - Access to the gallery (working but not as it's supposed to)
 > - Settings for the user to change the image/video quality
-> - Camera2API
 
 ## Todo list
 
