@@ -101,7 +101,7 @@ export default function Configs({ navigation }) {
           <Text style={styles.optionValue}>{(quality * 100).toFixed(0)}%</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.option} onPress={handleVideoQuality}>
-          <Text style={styles.optionTitle}>Video Quality</Text>
+          <Text style={styles.optionTitle}>Video Resolution</Text>
           <Text style={styles.optionValue}>{videoQuality}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.option} onPress={handleCameraApi}>
@@ -110,7 +110,10 @@ export default function Configs({ navigation }) {
             {camera2api === true ? 'On' : 'Off'}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
+        <TouchableOpacity
+          style={[styles.option, { backgroundColor: '#eee' }]}
+          disabled={true}
+        >
           <Text style={styles.optionTitle}>Focus</Text>
           <Text style={styles.optionValue}>auto</Text>
         </TouchableOpacity>
