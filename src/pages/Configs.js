@@ -11,13 +11,16 @@ import {
 export default function Configs({ navigation }) {
   const [quality, setQuality] = useState(1);
   const [videoQuality, setVideoQuality] = useState('720p');
-  const [camera2api, setCamera2api] = useState(false);
+  const [camera2api, setCamera2api] = useState('false');
+  const [focus, setFocus] = useState('false');
+  const [loadDone, setLoadDone] = useState(false);
 
   useEffect(() => {
     async function handleSettings() {
       const imageData = await AsyncStorage.getItem('quality');
       const videoData = await AsyncStorage.getItem('videoQuality');
       const cameraApiData = await AsyncStorage.getItem('camera2api');
+      const focusData = await AsyncStorage.getItem('focus');
 
       if (imageData) {
         setQuality(Number(imageData));
@@ -30,6 +33,12 @@ export default function Configs({ navigation }) {
       if (cameraApiData) {
         setCamera2api(cameraApiData);
       }
+
+      if (focusData) {
+        setFocus(focusData);
+      }
+
+      setLoadDone(true);
     }
 
     handleSettings();
@@ -37,33 +46,24 @@ export default function Configs({ navigation }) {
 
   useEffect(() => {
     async function handleSettings() {
-      setTimeout(() => {
-        AsyncStorage.setItem('quality', String(quality));
-      }, 200);
+      if (loadDone) {
+        setTimeout(() => {
+          AsyncStorage.setItem('quality', String(quality));
+        }, 200);
+        setTimeout(() => {
+          AsyncStorage.setItem('videoQuality', videoQuality);
+        }, 200);
+        setTimeout(() => {
+          AsyncStorage.setItem('camera2api', camera2api);
+        }, 200);
+        setTimeout(() => {
+          AsyncStorage.setItem('focus', focus);
+        }, 200);
+      }
     }
 
     handleSettings();
-  }, [quality]);
-
-  useEffect(() => {
-    async function handleSettings() {
-      setTimeout(() => {
-        AsyncStorage.setItem('videoQuality', videoQuality);
-      }, 200);
-    }
-
-    handleSettings();
-  }, [videoQuality]);
-
-  useEffect(() => {
-    async function handleSettings() {
-      setTimeout(() => {
-        AsyncStorage.setItem('camera2api', String(camera2api));
-      }, 200);
-    }
-
-    handleSettings();
-  }, [camera2api]);
+  }, [quality, videoQuality, camera2api, focus]);
 
   function handleQuality() {
     setQuality(quality + 0.45);
@@ -83,10 +83,18 @@ export default function Configs({ navigation }) {
   }
 
   function handleCameraApi() {
-    if (camera2api === true) {
-      setCamera2api(false);
+    if (camera2api === 'true') {
+      setCamera2api('false');
     } else {
-      setCamera2api(true);
+      setCamera2api('true');
+    }
+  }
+
+  function handleFocus() {
+    if (focus === 'false') {
+      setFocus('true');
+    } else {
+      setFocus('false');
     }
   }
 
@@ -107,15 +115,21 @@ export default function Configs({ navigation }) {
         <TouchableOpacity style={styles.option} onPress={handleCameraApi}>
           <Text style={styles.optionTitle}>Camera2API</Text>
           <Text style={styles.optionValue}>
-            {camera2api === true ? 'On' : 'Off'}
+            {camera2api === 'true' ? 'On' : 'Off'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.option, { backgroundColor: '#eee' }]}
-          disabled={true}
+          style={[
+            styles.option,
+            camera2api === 'false' ? { backgroundColor: '#eee' } : {},
+          ]}
+          disabled={camera2api === 'false' ? true : false}
+          onPress={handleFocus}
         >
           <Text style={styles.optionTitle}>Focus</Text>
-          <Text style={styles.optionValue}>auto</Text>
+          <Text style={styles.optionValue}>
+            {focus === 'true' ? 'manual' : 'auto'}
+          </Text>
         </TouchableOpacity>
       </View>
     </>

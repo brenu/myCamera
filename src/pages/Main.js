@@ -52,6 +52,7 @@ export default function Main({ navigation }) {
       const imageData = await AsyncStorage.getItem('quality');
       const videoData = await AsyncStorage.getItem('videoQuality');
       const cameraApiData = await AsyncStorage.getItem('camera2api');
+      const focusData = await AsyncStorage.getItem('focus');
 
       if (imageData !== null) {
         setQuality(Number(imageData));
@@ -63,6 +64,10 @@ export default function Main({ navigation }) {
 
       if (cameraApiData !== null) {
         setCamera2api(Boolean(cameraApiData));
+      }
+
+      if (focusData !== null) {
+        //console.log(focusData);
       }
     }
 
@@ -171,6 +176,8 @@ export default function Main({ navigation }) {
             flashMode={flashType}
             zoom={zoomType}
             useCamera2Api={camera2api}
+            //autoFocus={Camera.Constants.AutoFocus.off}
+            //focusDepth={1}
           ></Camera>
         </View>
         <View style={styles.btnsContainer}>
