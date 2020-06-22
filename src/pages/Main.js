@@ -96,7 +96,7 @@ export default function Main({ navigation }) {
   // Function that has to take pictures from the camera
   async function takePicture() {
     if (this.camera) {
-      const options = { quality: quality, skiProcessing: false };
+      const options = { quality: quality, skiProcessing: false, focus: 1 };
       const photo = await this.camera.takePictureAsync(options);
       await MediaLibrary.saveToLibraryAsync(photo.uri);
       return photo.uri;
@@ -176,8 +176,8 @@ export default function Main({ navigation }) {
             flashMode={flashType}
             zoom={zoomType}
             useCamera2Api={camera2api}
-            //autoFocus={Camera.Constants.AutoFocus.off}
-            //focusDepth={1}
+            autoFocus={Camera.Constants.AutoFocus.off}
+            focusDepth={1}
           ></Camera>
         </View>
         <View style={styles.btnsContainer}>
