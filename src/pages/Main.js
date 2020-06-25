@@ -26,7 +26,7 @@ export default function Main({ navigation }) {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
   const [zoomType, setZoomType] = useState(0);
-  const [foto, setFoto] = useState('');
+  const [foto, setFoto] = useState('/');
   const [isRecording, setIsRecording] = useState(false);
   const [video, setVideo] = useState('');
   const [mode, setMode] = useState('photo');
@@ -96,10 +96,16 @@ export default function Main({ navigation }) {
   // Function that has to take pictures from the camera
   async function takePicture() {
     if (this.camera) {
-      const options = { quality: quality, skiProcessing: false, focus: 1 };
+      const options = { quality: quality, skiProcessing: false };
       const photo = await this.camera.takePictureAsync(options);
-      await MediaLibrary.saveToLibraryAsync(photo.uri);
-      return photo.uri;
+      await MediaLibrary.saveToLibraryAsync(photo.uri)
+        .then(() => {
+          console.log(photo.uri);
+          setFoto(photo.uri);
+        })
+        .catch(() => {
+          setFoto('');
+        });
     }
   }
 
@@ -176,8 +182,8 @@ export default function Main({ navigation }) {
             flashMode={flashType}
             zoom={zoomType}
             useCamera2Api={camera2api}
-            autoFocus={Camera.Constants.AutoFocus.off}
-            focusDepth={1}
+            //autoFocus={Camera.Constants.AutoFocus.off}
+            //focusDepth={1}
           ></Camera>
         </View>
         <View style={styles.btnsContainer}>
@@ -259,9 +265,12 @@ export default function Main({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        {foto !== '' && (
+        {foto !== '/' && (
           <View style={styles.fotoContainer}>
-            <Image source={foto} style={styles.foto} />
+            <Image
+              source={foto ? { uri: foto } : { uri: '' }}
+              style={styles.foto}
+            />
           </View>
         )}
       </View>
@@ -325,14 +334,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   fotoContainer: {
-    flex: 1,
-    position: 'absolute',
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: '#00000055',
     justifyContent: 'center',
     alignItems: 'center',
   },
   foto: {
-    height: '100%',
+    height: 100,
     resizeMode: 'contain',
   },
 });
