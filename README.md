@@ -16,6 +16,7 @@ myCamera is entirely made by using React Native with Expo
 
 > - Take pictures
 > - Video recording
+> - Access to the gallery
 > - Change between front and rear camera
 > - Enable and disable flash
 > - Zoom
@@ -23,12 +24,11 @@ myCamera is entirely made by using React Native with Expo
 
 ## What I'm doing
 
-> - Access to the gallery (working but not as it's supposed to)
 > - Settings for the user to change the image/video quality
+> - Focus depth (needs Camera2API)
 
 ## Todo list
 
-> - Focus depth (needs Camera2API)
 > - User Interface improvement (because it's DEFINITELY not that pretty)
 > - HDR (It's more like a dream, because by now I have no ideia of how to do that)
 
@@ -39,4 +39,4 @@ receive some suggestions :D
 
 ## See myCamera
 
-> - [Play Store - v0.2.0](https://play.google.com/store/apps/details?id=com.brenu.camera) P.S.: Most part of the time, the Play Store version will not be the same as GitHub version, because it takes time for the new build to be approved by Google Play Console.
+> - [Play Store - v0.3.0](https://play.google.com/store/apps/details?id=com.brenu.camera) P.S.: Most part of the time, the Play Store version will not be the same as GitHub version, because it takes time for the new build to be approved by Google Play Console.
