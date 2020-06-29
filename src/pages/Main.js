@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   AsyncStorage,
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export default function Main({ navigation }) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -26,7 +28,7 @@ export default function Main({ navigation }) {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
   const [zoomType, setZoomType] = useState(0);
-  const [foto, setFoto] = useState('/');
+  const [foto, setFoto] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [video, setVideo] = useState('');
   const [mode, setMode] = useState('photo');
@@ -90,7 +92,7 @@ export default function Main({ navigation }) {
   }
 
   function handleMode() {
-    return mode === 'photo' ? setFoto(takePicture) : handleRecording();
+    return mode === 'photo' ? takePicture() : handleRecording();
   }
 
   // Function that has to take pictures from the camera
@@ -98,14 +100,9 @@ export default function Main({ navigation }) {
     if (this.camera) {
       const options = { quality: quality, skiProcessing: false };
       const photo = await this.camera.takePictureAsync(options);
-      await MediaLibrary.saveToLibraryAsync(photo.uri)
-        .then(() => {
-          console.log(photo.uri);
-          setFoto(photo.uri);
-        })
-        .catch(() => {
-          setFoto('');
-        });
+      await MediaLibrary.saveToLibraryAsync(photo.uri);
+
+      return photo.uri;
     }
   }
 
@@ -131,7 +128,7 @@ export default function Main({ navigation }) {
         return record.uri;
       } else {
         await this.camera.stopRecording();
-        return 'nothing';
+        return '';
       }
     }
   }
@@ -140,7 +137,8 @@ export default function Main({ navigation }) {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
     });
-    return result.uri;
+
+    return { localUri: result.uri };
   }
 
   function handleConfigNavigation() {
@@ -220,7 +218,13 @@ export default function Main({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.mainBtnsContainer}>
-            <TouchableOpacity style={styles.btn} onPress={pickImage}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={async () => {
+                const image = await pickImage();
+                setFoto(image);
+              }}
+            >
               <Ionicons
                 name="ios-photos"
                 style={{ color: '#fff', fontSize: 40 }}
@@ -265,15 +269,14 @@ export default function Main({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        {foto !== '/' && (
-          <View style={styles.fotoContainer}>
-            <Image
-              source={foto ? { uri: foto } : { uri: '' }}
-              style={styles.foto}
-            />
-          </View>
-        )}
       </View>
+      {foto && (
+        <RectButton style={styles.fotoContainer} onPress={() => setFoto(null)}>
+          <View style={styles.fotoCard}>
+            <Image source={{ uri: foto.localUri }} style={styles.foto} />
+          </View>
+        </RectButton>
+      )}
     </>
   );
 }
@@ -337,10 +340,17 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#00000055',
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  fotoCard: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    borderRadius: 10,
+    elevation: 5,
   },
   foto: {
-    height: 100,
+    height: 400,
     resizeMode: 'contain',
+    borderRadius: 20,
   },
 });
