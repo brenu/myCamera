@@ -4,7 +4,7 @@
     "slug": "mycamera",
     "privacy": "public",
     "platforms": ["ios", "android", "web"],
-    "version": "0.3.0",
+    "version": "0.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -29,7 +29,7 @@
     },
     "android": {
       "package": "com.brenu.camera",
-      "versionCode": 3
+      "versionCode": 4
     }
   }
 }
