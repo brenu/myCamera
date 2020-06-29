@@ -36,7 +36,7 @@ export default function Main({ navigation }) {
   //Props for the settings
   const [quality, setQuality] = useState(1);
   const [videoQuality, setVideoQuality] = useState('2160p');
-  const [camera2api, setCamera2api] = useState(false);
+  const [camera2api, setCamera2api] = useState('false');
 
   useEffect(() => {
     (async () => {
@@ -65,7 +65,7 @@ export default function Main({ navigation }) {
       }
 
       if (cameraApiData !== null) {
-        setCamera2api(Boolean(cameraApiData));
+        setCamera2api(cameraApiData);
       }
 
       if (focusData !== null) {
@@ -179,7 +179,7 @@ export default function Main({ navigation }) {
             }}
             flashMode={flashType}
             zoom={zoomType}
-            useCamera2Api={camera2api}
+            useCamera2Api={camera2api === 'false' ? false : true}
             //autoFocus={Camera.Constants.AutoFocus.off}
             //focusDepth={1}
           ></Camera>
