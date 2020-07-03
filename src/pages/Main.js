@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Slider,
   StatusBar,
 } from 'react-native';
 import { Camera, getPermissionsAsync, Constants } from 'expo-camera';
@@ -37,6 +38,8 @@ export default function Main({ navigation }) {
   const [quality, setQuality] = useState(1);
   const [videoQuality, setVideoQuality] = useState('2160p');
   const [camera2api, setCamera2api] = useState('false');
+  const [autoFocus, setAutoFocus] = useState('false');
+  const [focus, setFocus] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -69,12 +72,16 @@ export default function Main({ navigation }) {
       }
 
       if (focusData !== null) {
-        //console.log(focusData);
+        setAutoFocus(focusData);
       }
     }
 
     handleSettings();
   }, []);
+
+  useEffect(() => {
+    console.log(focus);
+  }, [focus]);
 
   if (
     hasCameraPermission === null ||
@@ -179,10 +186,33 @@ export default function Main({ navigation }) {
             }}
             flashMode={flashType}
             zoom={zoomType}
+            /*
             useCamera2Api={camera2api === 'false' ? false : true}
-            //autoFocus={Camera.Constants.AutoFocus.off}
-            //focusDepth={1}
-          ></Camera>
+            autoFocus={
+              autoFocus === 'false'
+                ? Camera.Constants.AutoFocus.off
+                : Camera.Constants.AutoFocus.on
+            }
+            focusDepth={undefined}
+            */
+          >
+            {autoFocus === 'true' ? (
+              <View style={styles.sliderContainer}>
+                <Slider
+                  style={styles.slider}
+                  minimumValue={1}
+                  maximumValue={0}
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#000000"
+                  thumbTintColor="#60AAEE"
+                  value={focus}
+                  onValueChange={(focus) => setFocus(focus)}
+                />
+              </View>
+            ) : (
+              <View />
+            )}
+          </Camera>
         </View>
         <View style={styles.btnsContainer}>
           <View style={styles.optionsBtnsContainer}>
@@ -328,6 +358,8 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
     marginTop: 0,
   },
   botaoFoto: {
@@ -352,5 +384,16 @@ const styles = StyleSheet.create({
     height: 400,
     resizeMode: 'contain',
     borderRadius: 20,
+  },
+  sliderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    paddingBottom: 50,
+    paddingHorizontal: -20,
+  },
+  slider: {
+    width: 100,
+    transform: [{ rotate: '-90deg' }],
   },
 });
